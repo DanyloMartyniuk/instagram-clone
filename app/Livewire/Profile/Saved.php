@@ -10,22 +10,17 @@ use Livewire\Component;
 class Saved extends Component
 {
     public $user;
-
-
-
     #[On('closeModal')]
     function reverUrl()
     {
         $this->js("history.replaceState({},'','/')");
     }
 
-
     function toggleFollow()
     {
         abort_unless(auth()->check(), 401);
         auth()->user()->toggleFollow($this->user);
     }
-
 
     function mount($user)
     {
