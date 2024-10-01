@@ -30,3 +30,38 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     enabledTransports: ['ws', 'wss'],
 });
+
+/**
+import axios from 'axios';
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+const pusherKey = import.meta.env.VITE_PUSHER_APP_KEY;
+const pusherCluster = import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1';
+const pusherHost = import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${pusherCluster}.pusher.com`;
+const pusherPort = import.meta.env.VITE_PUSHER_PORT ?? 80;
+const pusherScheme = import.meta.env.VITE_PUSHER_SCHEME ?? 'https';
+if (!pusherKey) {
+    console.error('Pusher key is missing in the environment variables.');
+}
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: pusherKey,
+    cluster: pusherCluster,
+    wsHost: pusherHost,
+    wsPort: pusherPort,
+    wssPort: pusherPort ?? 443,
+    forceTLS: pusherScheme === 'https',
+    enabledTransports: ['ws', 'wss'],
+    // Додавання обробки помилок для підключення
+    encrypted: true,
+});
+window.Echo.connector.pusher.connection.bind('error', function(err) {
+    console.error('WebSocket connection error:', err);
+});
+window.Echo.connector.pusher.connection.bind('connected', function() {
+    console.log('Successfully connected to Pusher WebSocket.');
+});
+ */
